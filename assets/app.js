@@ -247,8 +247,8 @@ function renderCards() {
         <p class="label">${esc(p.client)}</p>
         <h3>${esc(p.title)}</h3>
         <p class="card-sum">${esc(p.summary)}</p>
-        ${p.headline ? `<p class="card-result">${esc(p.headline)}</p>` : ""}
-        <span class="card-more">Read the case study</span>
+        ${p.headline ? `<div class="card-result"><span class="card-result-label">Results</span><p>${esc(p.headline)}</p></div>` : ""}
+        <span class="card-more">See the case study</span>
       </div>
     </button>`).join("");
   // Add each cover once it's found
