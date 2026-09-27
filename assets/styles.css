@@ -114,10 +114,12 @@
   .partners { padding: var(--space-10) 0 0; }
   .partner-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: var(--space-4);
     margin-top: var(--space-4);
   }
+  @media (min-width: 560px) { .partner-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+  @media (min-width: 860px) { .partner-grid { grid-template-columns: repeat(5, minmax(0, 1fr)); } }
   .partner-badge {
     display: flex; flex-direction: column; align-items: center; justify-content: center;
     gap: var(--space-2);
@@ -132,21 +134,27 @@
     display: flex; align-items: center; justify-content: center;
     width: 40px; height: 40px;
     border-radius: var(--radius-sm);
-    font-family: var(--font-display); font-weight: 700; font-size: 14px;
+    font-family: var(--font-display); font-weight: 700; font-size: 13px;
     color: var(--canvas);
   }
+  .partner-mark svg { width: 20px; height: 20px; stroke: var(--canvas); }
   .partner-badge:nth-child(3n+1) .partner-mark { background: var(--forest); }
   .partner-badge:nth-child(3n+2) .partner-mark { background: var(--rust); }
   .partner-badge:nth-child(3n+3) .partner-mark { background: var(--ochre); color: var(--slate); }
+  .partner-badge:nth-child(3n+3) .partner-mark svg { stroke: var(--slate); }
   .partner-name {
     display: block;
     font-family: var(--font-display); font-weight: 700;
-    font-size: 18px; line-height: 24px; color: var(--forest);
+    font-size: 15px; line-height: 20px; color: var(--forest);
   }
   .partner-sector {
     display: block;
-    font-family: var(--font-type); font-size: 11px; line-height: 16px;
-    letter-spacing: .06em; text-transform: uppercase; color: var(--ink-muted);
+    font-family: var(--font-type); font-size: 10px; line-height: 14px;
+    letter-spacing: .05em; text-transform: uppercase; color: var(--ink-muted);
+  }
+  .partners-note {
+    font-size: 13px; line-height: 20px; color: var(--ink-muted);
+    max-width: 72ch; margin: var(--space-6) 0 0;
   }
 
   /* Capabilities band */
@@ -210,9 +218,6 @@
   .offer-activities ul { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-2); }
   .offer-activities li { display: flex; align-items: baseline; gap: var(--space-2); }
   .offer-activities li::before { content: "\2014"; color: var(--ochre); font-weight: 700; flex: none; }
-  @media (max-width: 600px) {
-    .partner-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  }
 
   /* Work */
   .work { padding: 64px 0; }
