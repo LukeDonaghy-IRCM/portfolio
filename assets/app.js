@@ -125,6 +125,114 @@ function placeholderArt(seed) {
   </svg>`;
 }
 
+/* ---------- Offering tabs ---------- */
+const OFFERINGS = [
+  {
+    key: "strategy", label: "Strategy & campaigns",
+    title: "Strategy & campaigns",
+    summary: "Every project starts with a plan: who you need to reach, what you want them to feel and do, and how you'll know it worked. I've built campaign strategy for INSEAD's Business & Society Forum, change communications for a hospital group, and fundraising strategy for a charity bike ride across 20+ countries.",
+    phases: [
+      ["01", "Brief & audience mapping"],
+      ["02", "Message & channel plan"],
+      ["03", "Launch & iterate"]
+    ],
+    activities: ["Campaign strategy", "Communications strategy", "Change communications", "Fundraising strategy", "Audience & messaging", "Editorial planning"]
+  },
+  {
+    key: "content", label: "Content & production",
+    title: "Content & production",
+    summary: "Video, audio, photography, copy and print, produced in-house from brief to final file. I've run a dedicated audiovisual studio, shot events and portraits, edited concert footage, and written everything from social captions to annual reports.",
+    phases: [
+      ["01", "Shoot / write"],
+      ["02", "Edit / design"],
+      ["03", "Deliver in the right format"]
+    ],
+    activities: ["Video production", "Photography", "Audio & post-production", "Copywriting", "Print design", "Editorial"]
+  },
+  {
+    key: "web", label: "Web & platforms",
+    title: "Web & platforms",
+    summary: "Websites, CMS builds and the CRMs behind them. I design and build sites myself, wire up headless CMS and APIs for research portals, and build CRMs that connect sponsors, donors and partners in one place.",
+    phases: [
+      ["01", "UX & content structure"],
+      ["02", "Build & integrate"],
+      ["03", "Launch & maintain"]
+    ],
+    activities: ["Web design & development", "UX / UI", "Headless CMS & APIs", "CRM builds", "Illustration", "SEO"]
+  },
+  {
+    key: "paid", label: "Paid media & analytics",
+    title: "Paid media & analytics",
+    summary: "Google, Meta and LinkedIn campaigns set up, tracked and optimised, with the dashboards to show what's working. I've run structured A/B tests and built GA4 and Google Tag Manager tracking for clients across Europe and the US.",
+    phases: [
+      ["01", "Set up tracking"],
+      ["02", "Launch & test"],
+      ["03", "Report & optimise"]
+    ],
+    activities: ["Google Ads", "Meta Ads", "LinkedIn Ads", "GA4 & GTM", "A/B testing", "Attribution reporting"]
+  },
+  {
+    key: "events", label: "Events & live production",
+    title: "Events & live production",
+    summary: "From INSEAD's Business & Society Forum at the Grand Palais to concert audiovisual production, I plan events and handle the AV behind them, in front of and behind the camera.",
+    phases: [
+      ["01", "Plan the run of show"],
+      ["02", "Produce on the day"],
+      ["03", "Post-production & wrap-up"]
+    ],
+    activities: ["Event planning", "Live AV production", "360° media", "On-site photography", "Post-production", "Event comms"]
+  },
+  {
+    key: "sustainability", label: "Sustainability reporting",
+    title: "Sustainability reporting",
+    summary: "Sustainability runs through my own work too. I've edited and published annual and sustainability reports aligned to GRI, and mapped campaigns to the UN Sustainable Development Goals.",
+    phases: [
+      ["01", "Gather & structure data"],
+      ["02", "Write & design the report"],
+      ["03", "Publish & distribute"]
+    ],
+    activities: ["Sustainability reporting", "GRI-aligned reporting", "Editorial", "SDG mapping", "Stakeholder distribution", "Annual reports"]
+  }
+];
+
+function renderOfferingPanel(key) {
+  const o = OFFERINGS.find(x => x.key === key);
+  const panel = $("offerPanel");
+  if (!o || !panel) return;
+  panel.setAttribute("aria-labelledby", `tab-${o.key}`);
+  panel.innerHTML = `
+    <div class="offer-summary">
+      <h3>${esc(o.title)}</h3>
+      <p>${esc(o.summary)}</p>
+      <div class="offer-phases">
+        ${o.phases.map(([n, label]) => `<div class="offer-phase"><b>${esc(n)}</b><span>${esc(label)}</span></div>`).join("")}
+      </div>
+    </div>
+    <div class="offer-activities">
+      <h4>What's included</h4>
+      <ul>${o.activities.map(a => `<li>${esc(a)}</li>`).join("")}</ul>
+    </div>`;
+}
+
+function switchOffering(key) {
+  document.querySelectorAll("#offerTabs .tab").forEach(tab => {
+    tab.setAttribute("aria-selected", tab.dataset.key === key ? "true" : "false");
+  });
+  renderOfferingPanel(key);
+}
+
+function wireOfferings() {
+  const tabs = $("offerTabs");
+  if (!tabs) return;
+  tabs.innerHTML = OFFERINGS.map((o, i) =>
+    `<button class="tab" type="button" role="tab" id="tab-${o.key}" data-key="${o.key}" aria-selected="${i === 0}">${esc(o.label)}</button>`).join("");
+  tabs.addEventListener("click", e => {
+    const btn = e.target.closest(".tab");
+    if (btn) switchOffering(btn.dataset.key);
+  });
+  switchOffering(OFFERINGS[0].key);
+}
+
 /* ---------- Cards ---------- */
 let PROJECTS = [];
 
@@ -261,6 +369,7 @@ async function init() {
   $("yr").textContent = new Date().getFullYear();
   wireModal();
   wireGallery();
+  wireOfferings();
   try {
     const res = await fetch(CONFIG.csvUrl, { cache: "no-cache" });
     if (!res.ok) throw new Error(res.status);
