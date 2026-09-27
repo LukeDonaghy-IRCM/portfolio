@@ -64,4 +64,6 @@ Easiest: Cloudflare dashboard > Workers & Pages > Create > Pages > Upload assets
 
 With Git: push this folder to a GitHub repo and connect it in Pages. Leave the build command empty and set the output directory to `/`. Every push publishes automatically.
 
+`assets/*` is cached for an hour (see `_headers`), so a CSS or JS change can take up to an hour to show up for returning visitors. When you edit `assets/styles.css` or `assets/app.js`, bump the `?v=` query string on their `<link>`/`<script>` tags in `index.html` (e.g. `?v=2` to `?v=3`) so the new files load immediately instead of waiting out the cache.
+
 The three `projects/2-wheels-4-purpose/*.jpg` files are placeholders for testing the gallery. Replace or delete them.
